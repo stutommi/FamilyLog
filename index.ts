@@ -1,11 +1,9 @@
-import express from 'express'
+import http from 'http';
+import app from './app';
+import config from './utils/config';
 
-const app = express()
+const server = http.createServer(app)
 
-app.get('/', (req, res) => {
-  
-})
-
-app.listen(3001, () => {
-  console.log('started')
+server.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
