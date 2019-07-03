@@ -19,6 +19,7 @@ const tokenExtractor = (request: IReqWithToken, response: Response, next: NextFu
     const token = authorization.substring(7)
     request.token = token
   }
+
   next()
 }
 
@@ -28,14 +29,14 @@ const unknownEndpoint = (_: void, response: any) => {
 
 const errorHandler = (error: IError, _: void, response: Response, next: NextFunction) => {
   logger.error(error.message)
-  logger.error(error.message)
+  logger.error(error.name)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     error.message.includes('Blank')
-    ? response.status(400).json({ error: 'Blank fields' })
-    : response.status(400).json({ error: error.message })
+      ? response.status(400).json({ error: 'Blank fields' })
+      : response.status(400).json({ error: error.message })
   } else if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({ error: error.message })
   } else if (error.name === 'AuthenticationError') {

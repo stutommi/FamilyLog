@@ -6,25 +6,31 @@ import User from '../models/user'
 
 const personRouter = express.Router()
 
+// Decodes token and attaches it to request object
+personRouter.use((req: any, res, next) => {
+  // @ts-ignore
+  if (!req.token) {
+    const error = new Error('Token missing')
+    error.name = 'JsonWebTokenError'
+    return next(error)
+  }
+
+  const decodedToken: any = jwt.verify(req.token, process.env.SECRET as any)
+
+  if (!decodedToken.id) {
+    const error = new Error('Token invalid')
+    error.name = 'JsonWebTokenError'
+    return next(error)
+  }
+
+  req.decodedTokenId = decodedToken.id
+  next()
+})
+
 personRouter.get('/', async (req: any, res, next) => {
   try {
-    // @ts-ignore
-    if (!req.token) {
-      const error = new Error('Token missing')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
-    const decodedToken: any = jwt.verify(req.token, process.env.SECRET as any)
-
-    if (!decodedToken.id) {
-      const error = new Error('Token invalid')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
     const user: any = await User
-      .findById(decodedToken.id)
+      .findById(req.decodedTokenId)
       .populate('persons')
 
     res.status(200).json(user.persons)
@@ -36,23 +42,7 @@ personRouter.get('/', async (req: any, res, next) => {
 
 personRouter.put('/:id', async (req: any, res, next) => {
   const body = req.body
-  console.log('body', body)
   try {
-    // @ts-ignore
-    if (!req.token) {
-      const error = new Error('Token missing')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
-    const decodedToken: any = jwt.verify(req.token, process.env.SECRET as any)
-
-    if (!decodedToken.id) {
-      const error = new Error('Token invalid')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
     const updatedPerson = await Person.findByIdAndUpdate(req.params.id, body, { new: true })
 
     res.status(200).json(updatedPerson)
@@ -64,38 +54,41 @@ personRouter.put('/:id', async (req: any, res, next) => {
 
 personRouter.post('/new', async (req: any, res, next) => {
   const body = req.body
-
   try {
-    // @ts-ignore
-    if (!req.token) {
-      const error = new Error('Token missing')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
-    const decodedToken: any = jwt.verify(req.token, process.env.SECRET as any)
-
-    if (!decodedToken.id) {
-      const error = new Error('Token invalid')
-      error.name = 'JsonWebTokenError'
-      return next(error)
-    }
-
     const newPerson = new Person({
       ...body,
-      user: decodedToken.id
+      user: req.decodedTokenId
     })
 
     const savedPerson = await newPerson.save()
 
     await User.findByIdAndUpdate(
-      decodedToken.id,
+      req.decodedTokenId,
       { $push: { persons: savedPerson.id } },
       { new: true })
 
     res
       .status(201)
       .send({ newPerson })
+
+  } catch (exception) {
+    next(exception)
+  }
+})
+
+personRouter.delete('/:id', async (req: any, res, next) => {
+  try {
+    await User
+      .updateOne(
+        { _id: req.decodedTokenId },
+        { $pull: { persons: { $in: [req.params.id] } } }
+      )
+
+    await Person.findByIdAndRemove(req.params.id)
+
+    res
+      .status(200)
+      .send(req.params.id)
 
   } catch (exception) {
     next(exception)
