@@ -1,4 +1,4 @@
-let clientUrl = ''
+let clientUrl = 'https://familylog.herokuapp.com'
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -10,7 +10,7 @@ const GMAIL_PASS = process.env.GMAIL_PASS
 const PORT = process.env.PORT
 const EMAIL_SECRET = process.env.EMAIL_SECRET as string
 let mongoUrl: string = process.env.MONGODB_URI as string
-
+console.log('mongoUrl IN CONFIG', mongoUrl)
 if (process.env.NODE_ENV === 'test') {
   mongoUrl = process.env.TEST_MONGODB_URI as string
 }
