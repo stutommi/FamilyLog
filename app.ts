@@ -14,9 +14,6 @@ import registerRouter from './controllers/register'
 
 const app = express()
 app.use(express.static('build'))
-app.get('*', (request, response) => {
-  response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
 
 mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
   .then(() => logger.info('connected to database'))
