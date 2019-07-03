@@ -1,10 +1,8 @@
 // Libraries
 import * as mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
-// Types
 
-
-export interface Person extends mongoose.Document {
+export interface IPerson extends mongoose.Document {
   user: string[]
   name: string
   birth: string
@@ -16,29 +14,29 @@ export interface Person extends mongoose.Document {
 }
 
 const schema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true,
-    minlength: 1
-  },
   birth: {
-    type: Date,
-    required: true
+    required: true,
+    type: Date
   },
-  relative: {
-    type: Boolean,
-    requied: true
+  dislikes: [String],
+  likes: [String],
+  name: {
+    minlength: 1,
+    required: true,
+    type: String
   },
   relation: {
-    type: String,
-    required: true
+    required: true,
+    type: String
   },
-  likes: [String],
-  dislikes: [String]
+  relative: {
+    requied: true,
+    type: Boolean
+  },
+  user: {
+    required: true,
+    type: mongoose.Schema.Types.ObjectId
+  }
 })
 
 schema.set('toJSON', {
@@ -51,4 +49,4 @@ schema.set('toJSON', {
 
 schema.plugin(uniqueValidator)
 
-export default mongoose.model<Person>('Person', schema)
+export default mongoose.model<IPerson>('Person', schema)

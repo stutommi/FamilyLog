@@ -9,35 +9,35 @@ export interface IUser extends mongoose.Document {
   passwordHash: string
   persons: string[]
   _id: string
-  confirmation: Boolean
+  confirmation: boolean
 }
 
 const schema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: [true, 'Blank username'],
-    unique: [true, 'Username taken']
+  confirmed: {
+    default: false,
+    required: true,
+    type: Boolean
   },
   email: {
-    type: String,
     required: [true, 'Blank email'],
+    type: String,
     unique: [true, 'Email already in use']
   },
   passwordHash: {
-    type: String,
-    required: [true, 'Blank password']
-  },
-  confirmed: {
-    type: Boolean,
-    required: true,
-    default: false
+    required: [true, 'Blank password'],
+    type: String
   },
   persons: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Person'
+      ref: 'Person',
+      type: mongoose.Schema.Types.ObjectId
     }
-  ]
+  ],
+  username: {
+    required: [true, 'Blank username'],
+    type: String,
+    unique: [true, 'Username taken']
+  },
 })
 
 schema.set('toJSON', {

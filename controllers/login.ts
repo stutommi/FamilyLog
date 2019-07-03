@@ -6,10 +6,6 @@ import User from '../models/user'
 
 const loginRouter = express.Router()
 
-interface ReqWithToken extends Request {
-  token: string
-}
-
 loginRouter.post('/', async (req, res, next) => {
   const body = req.body
   try {
@@ -32,18 +28,16 @@ loginRouter.post('/', async (req, res, next) => {
       return next(error)
     }
 
-
     const userForToken = {
-      username: body.username,
-      id: user._id
+      id: user._id,
+      username: body.username
     }
+
     const token = jwt.sign(userForToken, process.env.SECRET as jwt.Secret)
 
     res
       .status(200)
-      .send({ token, username: user.username, id: user.id })
-
-
+      .send({ token, username: user.username})
 
   } catch (exception) {
     next(exception)

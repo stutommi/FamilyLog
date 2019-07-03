@@ -8,7 +8,7 @@ import User from '../models/user'
 import { transporter } from '../utils/mailConfig'
 import config from '../utils/config'
 
-interface RegisterArgs {
+interface IRegisterArgs {
   email: string,
   username: string,
   password: string,
@@ -17,7 +17,7 @@ interface RegisterArgs {
 const registerRouter = express.Router()
 
 registerRouter.post('/', async (req, res, next) => {
-  const { email, username, password }: RegisterArgs = req.body
+  const { email, username, password }: IRegisterArgs = req.body
 
   try {
     const saltRounds: number = 10
@@ -30,14 +30,12 @@ registerRouter.post('/', async (req, res, next) => {
 
     const newUser = new User({
       email,
-      username,
-      passwordHash
+      passwordHash,
+      username
     })
 
     const savedUser = await newUser.save()
 
-    console.log(savedUser)
-    console.log(config.EMAIL_SECRET as jwt.Secret)
     jwt.sign({
       id: savedUser._id
     },
@@ -47,14 +45,14 @@ registerRouter.post('/', async (req, res, next) => {
         const url = `http://localhost:3003/api/register/confirmation/${emailToken}`
 
         transporter.sendMail({
-          to: email,
-          subject: 'Confirm Email',
           html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+          subject: 'Confirm Email',
+          to: email,
         })
 
       })
 
-    res.json(savedUser)
+    res.status(201).send('Register succesful')
 
   } catch (exception) {
     next(exception)

@@ -1,17 +1,17 @@
 import logger from './logger';
 import { Request, Response, NextFunction } from 'express';
 
-interface Error {
+interface IError {
   status: number,
   message: string,
   name: string
 }
 
-interface ReqWithToken extends Request {
+interface IReqWithToken extends Request {
   token: string
 }
 
-const tokenExtractor = (request: ReqWithToken, response: Response, next: NextFunction) => {
+const tokenExtractor = (request: IReqWithToken, response: Response, next: NextFunction) => {
 
   const authorization = request.get('authorization')
 
@@ -26,7 +26,7 @@ const unknownEndpoint = (_: void, response: any) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error: Error, _: void, response: Response, next: NextFunction) => {
+const errorHandler = (error: IError, _: void, response: Response, next: NextFunction) => {
   logger.error(error.message)
   logger.error(error.message)
 
