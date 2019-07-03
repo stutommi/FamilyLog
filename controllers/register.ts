@@ -42,7 +42,7 @@ registerRouter.post('/', async (req, res, next) => {
       config.EMAIL_SECRET,
       (_: any, emailToken: string) => {
         console.log(emailToken)
-        const url = `http://localhost:3003/api/register/confirmation/${emailToken}`
+        const url = `${config.clientUrl}/api/register/confirmation/${emailToken}`
 
         transporter.sendMail({
           html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
@@ -68,8 +68,7 @@ registerRouter.get('/confirmation/:token', async (req, res, next) => {
   } catch (exception) {
     next(exception)
   }
-console.log('config.clientUrl', config.clientUrl)
   return res.redirect(`${config.clientUrl}/login`)
-});
+})
 
 export default registerRouter
