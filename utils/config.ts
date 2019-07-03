@@ -1,6 +1,7 @@
 let clientUrl = 'https://familylog.herokuapp.com'
 
 if (process.env.NODE_ENV !== 'production') {
+  console.log('FIRED')
   require('dotenv').config()
   clientUrl = 'http://localhost:3000'
 }
