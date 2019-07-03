@@ -12,7 +12,7 @@ import registerRouter from './controllers/register'
 
 const app = express()
 app.use(express.static('build'))
-console.log('config.mongoUrl IN APP', config.mongoUrl)
+console.log('config.mongoUrl', config.mongoUrl)
 mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useCreateIndex: true })
   .then(() => logger.info('connected to database'))
   .catch(error => logger.error('error connecting to database', error.message)

@@ -8,9 +8,10 @@ if (process.env.NODE_ENV !== 'production') {
 const GMAIL_USER = process.env.GMAIL_USER
 const GMAIL_PASS = process.env.GMAIL_PASS
 const PORT = process.env.PORT
-const EMAIL_SECRET = process.env.EMAIL_SECRET
-let mongoUrl = process.env.MONGODB_URI
+const EMAIL_SECRET = process.env.EMAIL_SECRET as string
+let mongoUrl: string = process.env.MONGODB_URI as string
 console.log('mongoUrl IN CONFIG', mongoUrl)
+console.log('process.env.GMAIL_USER', process.env.GMAIL_USER)
 if (process.env.NODE_ENV === 'test') {
   mongoUrl = process.env.TEST_MONGODB_URI as string
 }
