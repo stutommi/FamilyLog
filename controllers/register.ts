@@ -68,7 +68,7 @@ registerRouter.get('/confirmation/:token', async (req, res, next) => {
   } catch (exception) {
     next(exception)
   }
-
+console.log('config.clientUrl', config.clientUrl)
   return res.redirect(`${config.clientUrl}/login`)
 });
 
