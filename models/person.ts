@@ -2,6 +2,12 @@
 import * as mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 
+export interface ISpecialEvent {
+  type: string,
+  date: Date,
+  notifyByEmail: boolean
+}
+
 export interface IPerson extends mongoose.Document {
   user: string[]
   name: string
@@ -10,7 +16,8 @@ export interface IPerson extends mongoose.Document {
   relation: string[]
   _id: string
   likes: string[],
-  dislikes: string[]
+  dislikes: string[],
+  specialEvents: ISpecialEvent[]
 }
 
 const schema = new mongoose.Schema({
@@ -33,6 +40,13 @@ const schema = new mongoose.Schema({
     requied: true,
     type: Boolean
   },
+  specialEvent: [
+    {
+      type: String,
+      date: Date,
+      notifyByEmail: Boolean
+    }
+  ],
   user: {
     required: true,
     ref: 'User',

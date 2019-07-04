@@ -47,7 +47,7 @@ registerRouter.post('/', async (req, res, next) => {
         transporter.sendMail({
           html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
           subject: 'Confirm Email',
-          to: email,
+          to: email
         })
 
       })
