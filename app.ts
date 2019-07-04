@@ -28,6 +28,10 @@ app.use('/api/login', loginRouter)
 app.use('/api/register', registerRouter)
 app.use('/api/person', personRouter)
 
+app.get('/*', (request, response) => {
+  response.sendFile(path.join(__dirname, './build/index.html'));
+})
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler as any)
 
