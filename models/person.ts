@@ -1,15 +1,17 @@
 // Libraries
 import * as mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
+// Types
+import {IUser} from './user'
 
 export interface ISpecialEvent {
   type: string,
-  date: Date,
+  date: string,
   notifyByEmail: boolean
 }
 
 export interface IPerson extends mongoose.Document {
-  user: string[]
+  user: string[] | IUser
   name: string
   birth: string
   relative: string
