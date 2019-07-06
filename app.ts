@@ -8,9 +8,8 @@ import config from './utils/config'
 import logger from './utils/logger'
 import middleware from './utils/middleware'
 // Routes
-import loginRouter from './controllers/login'
 import personRouter from './controllers/person'
-import registerRouter from './controllers/register'
+import userRouter from './controllers/user/user'
 
 const app = express()
 app.use(express.static('build'))
@@ -24,8 +23,7 @@ app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use(middleware.tokenExtractor as any)
 
-app.use('/api/login', loginRouter)
-app.use('/api/register', registerRouter)
+app.use('/api/user', userRouter)
 app.use('/api/person', personRouter)
 
 app.get('/*', (request, response) => {

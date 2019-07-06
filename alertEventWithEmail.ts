@@ -86,7 +86,6 @@ export const alertEventWithEmail = async () => {
 
           // Skip if shouldn't notify by email
           if (!cur.notifyByEmail) {
-            console.log('HERENOW')
             return acc
           }
 

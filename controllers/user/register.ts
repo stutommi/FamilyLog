@@ -3,10 +3,10 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 // Models
-import User from '../models/user'
+import User from '../../models/user'
 // Utils
-import { transporter } from '../utils/mailConfig'
-import config from '../utils/config'
+import { transporter } from '../../utils/mailConfig'
+import config from '../../utils/config'
 
 interface IRegisterArgs {
   email: string,
