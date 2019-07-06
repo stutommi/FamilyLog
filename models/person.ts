@@ -2,7 +2,7 @@
 import * as mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 // Types
-import {IUser} from './user'
+import { IUser } from './user'
 
 export interface ISpecialEvent {
   type: string,
@@ -10,10 +10,15 @@ export interface ISpecialEvent {
   notifyByEmail: boolean
 }
 
+export interface IBirth {
+  date: string,
+  notifyByEmail: boolean
+}
+
 export interface IPerson extends mongoose.Document {
-  user: string[] | IUser
+  user: string | IUser
   name: string
-  birth: string
+  birth: IBirth
   relative: string
   relation: string[]
   _id: string
@@ -22,10 +27,17 @@ export interface IPerson extends mongoose.Document {
   specialEvents: ISpecialEvent[]
 }
 
+// Schema
 const schema = new mongoose.Schema({
   birth: {
-    required: true,
-    type: Date
+    date: {
+      required: true,
+      type: Date
+    },
+    notifyByEmail: {
+      required: true,
+      type: Boolean
+    }
   },
   dislikes: [String],
   likes: [String],
@@ -42,11 +54,22 @@ const schema = new mongoose.Schema({
     requied: true,
     type: Boolean
   },
-  specialEvent: [
+  specialEvents: [
     {
-      type: String,
-      date: Date,
-      notifyByEmail: Boolean
+      type: {
+        type: String,
+        required: true,
+        unique: true
+      },
+      date: {
+        type: String,
+        required: true
+      },
+      notifyByEmail: {
+        type: Boolean,
+        required: true,
+        default: true
+      }
     }
   ],
   user: {

@@ -10,9 +10,15 @@ export interface IUser extends mongoose.Document {
   persons: string[]
   _id: string
   confirmation: boolean
+  allowEmailNotifications: boolean
 }
 
 const schema = new mongoose.Schema({
+  allowEmailNotifications: {
+    default: true,
+    required: true,
+    type: Boolean
+  },
   confirmed: {
     default: false,
     required: true,
