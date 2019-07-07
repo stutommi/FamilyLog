@@ -25,14 +25,12 @@ editRouter.put('/email-notifications', async (req: any, res, next) => {
 
     const user: any = await User.findById(decodedToken.id)
     const currentNotificationStatus = user.allowEmailNotifications
-    
+
     user.allowEmailNotifications = !currentNotificationStatus
-    
+
     user.save()
-    
-    console.log('user.allowEmailNotifications', user.allowEmailNotifications)
-    console.log('!currentNotificationStatus', !currentNotificationStatus)
-    res.status(200).send({allowEmailNotifications: !currentNotificationStatus})
+
+    res.status(200).send({ allowEmailNotifications: !currentNotificationStatus })
 
   } catch (error) {
     next(error)

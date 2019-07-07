@@ -27,7 +27,7 @@ loginRouter.post('/', async (req, res, next) => {
       error.name = 'AuthenticationError'
       return next(error)
     }
-    
+
     const userForToken = {
       id: user._id,
       username: body.username

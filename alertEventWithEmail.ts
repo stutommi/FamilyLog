@@ -32,7 +32,8 @@ const htmlMessageSpecialEvent = (name: string, type: string, date: string): stri
 </h1>
 
 <p>
-  ${moment().add(8, 'days').diff(date, 'years')} years ago was the first time of ${type.toLocaleLowerCase()} with ${name}.
+  ${moment().add(8, 'days').diff(date, 'years')} years ago was the first time of
+  ${type.toLocaleLowerCase()} with ${name}. <br/>
   The exact date is ${moment().add(7, 'days').format('dddd, D.MM.YYYY')}
 </p>
 
@@ -52,8 +53,6 @@ export const alertEventWithEmail = async () => {
 
   try {
     const personArray: IPerson[] = await Person.find({}).populate('user')
-
-
 
     personArray.forEach(person => {
 
