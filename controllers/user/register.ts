@@ -42,7 +42,7 @@ registerRouter.post('/', async (req, res, next) => {
       config.EMAIL_SECRET,
       (_: any, emailToken: string) => {
         console.log(emailToken)
-        const url = `${config.clientUrl}/api/register/confirmation/${emailToken}`
+        const url = `${config.clientUrl}/api/user/register/confirmation/${emailToken}`
 
         transporter.sendMail({
           html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
@@ -60,7 +60,6 @@ registerRouter.post('/', async (req, res, next) => {
 })
 
 registerRouter.get('/confirmation/:token', async (req, res, next) => {
-
   try {
     const decodedToken: any = jwt.verify(req.params.token, config.EMAIL_SECRET as string)
 
